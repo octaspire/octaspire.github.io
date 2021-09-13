@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2021-09-13 Mon 22:04 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCTASPIRE/CORE/MANUAL</title>
+<meta name="generator" content="Org mode">
+<link rel='stylesheet' type='text/css' href='/assets/style.css'/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<header>
+<h1 class="title">OCTASPIRE/CORE/MANUAL</h1>
+</header><button title='toggle table of contents' class='toc-toggle-button' id='button_toc_toggle'>toggle table of contents</button><script>
+  var button = document.querySelector('#button_toc_toggle');
+  button.addEventListener('click', function(event) {
+    var s= document.querySelector('#table-of-contents').style;
+    if (s.display == 'none' || s.display == '') { s.display = 'block'; } else { s.display = 'none'; }  });
+</script><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6869b9f">1. About</a></li>
+<li><a href="#org8c6968f">2. Building the amalgamated source release</a>
+<ul>
+<li><a href="#org1b38404">2.1. Linux, FreeBSD, OpenBSD, NetBSD, OpenIndiana, DragonFly BSD, MidnightBSD, MINIX 3, Haiku, macOS, Termux, AROS</a></li>
+<li><a href="#org11d358d">2.2. Windows using MinGW and Git</a></li>
+<li><a href="#orgccf3193">2.3. Windows using MSVC and Git</a></li>
+<li><a href="#orgb3a964e">2.4. AmigaOS 4.x</a></li>
+<li><a href="#org483f21c">2.5. Running unit tests</a></li>
+</ul>
+</li>
+<li><a href="#org449362c">3. Quick tour of library features</a>
+<ul>
+<li><a href="#orgc4299c4">3.1. Naming</a></li>
+<li><a href="#org18a10e2">3.2. UTF-8 Strings</a></li>
+<li><a href="#orgf356410">3.3. Vector</a></li>
+<li><a href="#org92e8bb6">3.4. List</a></li>
+<li><a href="#org03b42f0">3.5. Queue</a></li>
+<li><a href="#org7e573d2">3.6. Pair</a></li>
+<li><a href="#org7334166">3.7. Hash map</a></li>
+<li><a href="#orgcffee70">3.8. Input streams from memory and files</a></li>
+<li><a href="#orge44cad5">3.9. Lower level helpers</a></li>
+</ul>
+</li>
+<li><a href="#org9ec5eac">4. Using the development repository</a>
+<ul>
+<li><a href="#org821eda5">4.1. Raspberry Pi, Debian and Ubuntu</a></li>
+<li><a href="#orgcb9d4de">4.2. Arch Linux</a></li>
+<li><a href="#orge2dbf95">4.3. Haiku</a></li>
+<li><a href="#orgfb63124">4.4. FreeBSD</a></li>
+<li><a href="#org56a3ced">4.5. NetBSD</a></li>
+<li><a href="#orgb0eeea0">4.6. MINIX 3</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+<a href="../../">Home</a> &raquo; <a href="../">Core</a> &raquo; Manual
+</p>
+
+<div id="outline-container-org6869b9f" class="outline-2">
+<h2 id="org6869b9f"><span class="section-number-2">1</span> About</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Octaspire Core is a container, UTF-8 and utility library written in
+standard <i>C99</i>. Core should compile cleanly without any warnings using
+<code>-Wall -Wextra</code> on any compiler supporting a subset of C99. Currently it
+is tested with gcc, clang, Tiny C Compiler (tcc), Portable C compiler
+(pcc) and Plan9&rsquo;s 8c.
+</p>
+
+<p>
+Octaspire Core is free and open source software, licensed under the
+Apache License, Version 2.0. See file LICENSE in the source
+distribution for more information.
+</p>
+
+<p>
+Core uses <a href="http://semver.org/">Semantic Versioning 2.0.0</a> version numbering scheme. As long
+as the MAJOR version number is zero anything can change at any time,
+even in backwards incompatible manner.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8c6968f" class="outline-2">
+<h2 id="org8c6968f"><span class="section-number-2">2</span> Building the amalgamated source release</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The amalgamated source release is the recommended way of using Core,
+if you don&rsquo;t need to modify Core itself. To use the amalgamated
+release, you will need only a C compiler and C standard library
+supporting a subset of C99.
+</p>
+</div>
+
+<div id="outline-container-org1b38404" class="outline-3">
+<h3 id="org1b38404"><span class="section-number-3">2.1</span> Linux, FreeBSD, OpenBSD, NetBSD, OpenIndiana, DragonFly BSD, MidnightBSD, MINIX 3, Haiku, macOS, Termux, AROS</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G0'>copy to clipboard</button>
+<textarea readonly id='area_G0' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>curl -O octaspire.com/core/core.tar.bz2
+curl -O https://octaspire.io/core/core.sha512
+sha512sum -c --ignore-missing core.sha512
+tar jxf core.tar.bz2
+cd core
+sh how-to-build/YOUR_PLATFORM_NAME_HERE.XX
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G0');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G0');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">curl -O octaspire.com/core/core.tar.bz2
+curl -O https://octaspire.io/core/core.sha512
+sha512sum -c --ignore-missing core.sha512
+tar jxf core.tar.bz2
+<span style="color: #b218b2;">cd</span> core
+sh how-to-build/YOUR_PLATFORM_NAME_HERE.XX
+</pre>
+</div>
+
+<p>
+Replace YOUR<sub>PLATFORM</sub><sub>NAME</sub><sub>HERE.XX</sub> with FreeBSD.sh, NetBSD.sh,
+OpenBSD.sh, OpenIndiana.sh, DragonFlyBSD.sh, MidnightBSD.sh, linux.sh,
+minix3.sh, haiku.sh, macOS.sh, termux.sh or AROS.sh. More scripts for
+different platforms will be added later.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org11d358d" class="outline-3">
+<h3 id="org11d358d"><span class="section-number-3">2.2</span> Windows using MinGW and Git</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Download and install <a href="http://www.mingw.org/">MinGW</a> into a directory, for example into
+<code>C:\MinGW</code>. Install the GCC compiler. Add <code>MinGW\bin</code> into the <code>PATH</code> (for
+example, if you installed into <code>C:\MinGW</code>, add <code>C:\MinGW\bin</code> into the
+<code>PATH</code>).
+</p>
+
+<p>
+Download and install <a href="https://git-scm.com/download/win">Git for Windows</a>.
+</p>
+
+<p>
+Start <i>Git Bash</i> and run the following commands:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G2'>copy to clipboard</button>
+<textarea readonly id='area_G2' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>git clone https://github.com/octaspire/core.git
+cd core/release
+how-to-build/windows-mingw.sh
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G2');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G2');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core/release
+how-to-build/windows-mingw.sh
+</pre>
+</div>
+
+<p>
+Start <i>Windows Command Prompt</i> and change directory to the same release
+directory, as above. Run examples and programs in the <i>Command Prompt</i>
+window (NOT in the Git Bash window).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgccf3193" class="outline-3">
+<h3 id="orgccf3193"><span class="section-number-3">2.3</span> Windows using MSVC and Git</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Download and install <i>Visual Studio 2017 (Community edition)</i> and
+<i>Git</i>.
+</p>
+
+<p>
+Start <i>Developer Command Prompt for VS 2017</i>. It can be found under
+<i>Visual Studio 2017</i> in the start menu.
+</p>
+
+<p>
+Please note, that you cannot use regular windows command prompt.
+</p>
+
+<p>
+Enter the following commands into the Developer Command Prompt:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G4'>copy to clipboard</button>
+<textarea readonly id='area_G4' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>cd c:\
+git clone https://github.com/octaspire/core.git
+cd core\release
+how-to-build\windows-msvc.bat
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G4');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G4');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #b218b2;">cd</span> c:<span style="color: #ff1f8b;">\</span>
+git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core\release
+how-to-build\windows-msvc.bat
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb3a964e" class="outline-3">
+<h3 id="orgb3a964e"><span class="section-number-3">2.4</span> AmigaOS 4.x</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Download and install <a href="http://www.hyperion-entertainment.biz/index.php/downloads?view=download&amp;layout=form&amp;file=82">AmigaOS SDK</a>. Download and extract <a href="http://aminet.net/util/arc/bzip2.lha">bzip2</a>
+to get <i>bzip2<sub>68k</sub></i> executable. Download
+the <a href="http://octaspire.com/core/core.tar.bz2">amalgamated Core source release</a>.
+</p>
+
+<p>
+Open Shell window and run the following commands:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G6'>copy to clipboard</button>
+<textarea readonly id='area_G6' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>bzip2_68k -dk core.tar.bz2
+tar xf core.tar
+cd core
+sh how-to-build/AmigaOS41.sh
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G6');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G6');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">bzip2_68k -dk core.tar.bz2
+tar xf core.tar
+<span style="color: #b218b2;">cd</span> core
+sh how-to-build/AmigaOS41.sh
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org483f21c" class="outline-3">
+<h3 id="org483f21c"><span class="section-number-3">2.5</span> Running unit tests</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+This is all there should be to it; when make finishes, everything
+should be ready. To run the unit tests:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G8'>copy to clipboard</button>
+<textarea readonly id='area_G8' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>test/octaspire-core-test-runner
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G8');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G8');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">test/octaspire-core-test-runner
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org449362c" class="outline-2">
+<h2 id="org449362c"><span class="section-number-2">3</span> Quick tour of library features</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Here we take a quick look at the features of the library.
+</p>
+</div>
+
+<div id="outline-container-orgc4299c4" class="outline-3">
+<h3 id="orgc4299c4"><span class="section-number-3">3.1</span> Naming</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+C doesn&rsquo;t have namespaces. To prevent name collisions, all names in
+the library are prefixed with <code>octaspire_</code>. For example,
+<code>octaspire_string_t</code> is the string type and <code>octaspire_string_new</code> is one
+of the functions that create new strings. <code>octaspire_vector_t</code> is the
+vector type and <code>octaspire_map_t</code> is the hash-map type.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18a10e2" class="outline-3">
+<h3 id="org18a10e2"><span class="section-number-3">3.2</span> UTF-8 Strings</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Strings in Core have full UTF-8 support. Because ASCII strings are, by
+defininition, valid UTF-8, Core strings can be used to store &ldquo;old&rdquo;
+ASCII text or characters of almost any human script. Below is a short
+example of strings:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G10'>copy to clipboard</button>
+<textarea readonly id='area_G10' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>/****************************************************
+ To compile this file from the &apos;examples&apos; directory:
+ c99 -Wall -Wextra -pedantic -I ../../include/ \
+     string-example.c -lm -L ../../build/      \
+     -loctaspire-core -o string-example
+****************************************************/
+#include &lt;stdio.h&gt;
+#define OCTASPIRE_CORE_AMALGAMATED_IMPLEMENTATION
+#include &quot;octaspire-core-amalgamated.c&quot;
+
+int main(void)
+{
+    octaspire_allocator_t *allocator =
+        octaspire_allocator_new(0);
+
+    octaspire_string_t *myStr =
+        octaspire_string_new(
+            &quot;Hello world!&quot;,
+            allocator);
+
+    printf(
+        &quot;String is \&quot;%s\&quot;\n&quot;,
+        octaspire_string_get_c_string(
+            myStr));
+
+    octaspire_string_release(myStr);
+    myStr = 0;
+
+    octaspire_allocator_release(allocator);
+    allocator = 0;
+
+    return 0;
+}
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G10');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G10');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #b2b2b2; font-style: italic;">/****************************************************</span>
+<span style="color: #b2b2b2; font-style: italic;"> To compile this file from the 'examples' directory:</span>
+<span style="color: #b2b2b2; font-style: italic;"> c99 -Wall -Wextra -pedantic -I ../../include/ \</span>
+<span style="color: #b2b2b2; font-style: italic;">     string-example.c -lm -L ../../build/      \</span>
+<span style="color: #b2b2b2; font-style: italic;">     -loctaspire-core -o string-example</span>
+<span style="color: #b2b2b2; font-style: italic;">***************************************************</span><span style="color: #b2b2b2; font-style: italic;">*/</span>
+<span style="color: #b218b2;">#include</span> <span style="color: #ff1f8b;">&lt;stdio.h&gt;</span>
+<span style="color: #b218b2;">#define</span> <span style="color: #ff8700;">OCTASPIRE_CORE_AMALGAMATED_IMPLEMENTATION</span>
+<span style="color: #b218b2;">#include</span> <span style="color: #ff1f8b;">"octaspire-core-amalgamated.c"</span>
+
+<span style="color: #18b2b2;">int</span> <span style="color: #ef2929;">main</span>(<span style="color: #18b2b2;">void</span>)
+{
+    <span style="color: #18b2b2;">octaspire_allocator_t</span> *<span style="color: #ff8700;">allocator</span> =
+        octaspire_allocator_new(0);
+
+    <span style="color: #18b2b2;">octaspire_string_t</span> *<span style="color: #ff8700;">myStr</span> =
+        octaspire_string_new(
+            <span style="color: #ff1f8b;">"Hello world!"</span>,
+            allocator);
+
+    printf(
+        <span style="color: #ff1f8b;">"String is \"%s\"\n"</span>,
+        octaspire_string_get_c_string(
+            myStr));
+
+    octaspire_string_release(myStr);
+    myStr = 0;
+
+    octaspire_allocator_release(allocator);
+    allocator = 0;
+
+    <span style="color: #00af00;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf356410" class="outline-3">
+<h3 id="orgf356410"><span class="section-number-3">3.3</span> Vector</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Vector is a linear container that stores its elements in continuous
+blocks of memory. Vector can be used to store any data, including
+pointers or blocks of memory.
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G12'>copy to clipboard</button>
+<textarea readonly id='area_G12' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>/***************************************************
+ To compile this file from the &apos;examples&apos; directory:
+ c99 -Wall -Wextra -pedantic              \
+     -I ../../include/ vector-example.c   \
+     -lm -L ../../build/ -loctaspire-core \
+     -o vector-example
+***************************************************/
+#include &lt;stdio.h&gt;
+#define OCTASPIRE_CORE_AMALGAMATED_IMPLEMENTATION
+#include &quot;octaspire-core-amalgamated.c&quot;
+
+int main(void)
+{
+    octaspire_allocator_t *allocator =
+        octaspire_allocator_new(0);
+
+    octaspire_vector_t *v =
+        octaspire_vector_new(
+            sizeof(octaspire_string_t*),
+            true,
+            (octaspire_vector_element_callback_t)
+                octaspire_string_release,
+            allocator);
+
+    for (size_t i = 0; i &lt; 10; ++i)
+    {
+        octaspire_string_t *s =
+            octaspire_string_new_format(
+                allocator,
+                &quot;Hello %zu world!&quot;,
+                i);
+
+        if (!octaspire_vector_push_back_element(
+                v,
+                &amps))
+        {
+            printf(&quot;Cannot insert string\n&quot;);
+        }
+    }
+
+    for (size_t i = 0;
+         i &lt; octaspire_vector_get_length(v);
+         ++i)
+    {
+        octaspire_string_t const * const s =
+            octaspire_vector_get_element_at_const(
+                v,
+                i);
+
+        printf(
+            &quot;String %zu. is: %s\n&quot;,
+            i,
+            octaspire_string_get_c_string(
+                s));
+    }
+
+    octaspire_vector_release(v);
+    v = 0;
+
+    octaspire_allocator_release(allocator);
+    allocator = 0;
+
+    return 0;
+}
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G12');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G12');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #b2b2b2; font-style: italic;">/***************************************************</span>
+<span style="color: #b2b2b2; font-style: italic;"> To compile this file from the 'examples' directory:</span>
+<span style="color: #b2b2b2; font-style: italic;"> c99 -Wall -Wextra -pedantic              \</span>
+<span style="color: #b2b2b2; font-style: italic;">     -I ../../include/ vector-example.c   \</span>
+<span style="color: #b2b2b2; font-style: italic;">     -lm -L ../../build/ -loctaspire-core \</span>
+<span style="color: #b2b2b2; font-style: italic;">     -o vector-example</span>
+<span style="color: #b2b2b2; font-style: italic;">**************************************************</span><span style="color: #b2b2b2; font-style: italic;">*/</span>
+<span style="color: #b218b2;">#include</span> <span style="color: #ff1f8b;">&lt;stdio.h&gt;</span>
+<span style="color: #b218b2;">#define</span> <span style="color: #ff8700;">OCTASPIRE_CORE_AMALGAMATED_IMPLEMENTATION</span>
+<span style="color: #b218b2;">#include</span> <span style="color: #ff1f8b;">"octaspire-core-amalgamated.c"</span>
+
+<span style="color: #18b2b2;">int</span> <span style="color: #ef2929;">main</span>(<span style="color: #18b2b2;">void</span>)
+{
+    <span style="color: #18b2b2;">octaspire_allocator_t</span> *<span style="color: #ff8700;">allocator</span> =
+        octaspire_allocator_new(0);
+
+    <span style="color: #18b2b2;">octaspire_vector_t</span> *<span style="color: #ff8700;">v</span> =
+        octaspire_vector_new(
+            <span style="color: #00af00;">sizeof</span>(<span style="color: #18b2b2;">octaspire_string_t</span>*),
+            <span style="color: #1f5bff;">true</span>,
+            (<span style="color: #18b2b2;">octaspire_vector_element_callback_t</span>)
+                octaspire_string_release,
+            allocator);
+
+    <span style="color: #00af00;">for</span> (<span style="color: #18b2b2;">size_t</span> <span style="color: #ff8700;">i</span> = 0; i &lt; 10; ++i)
+    {
+        <span style="color: #18b2b2;">octaspire_string_t</span> *<span style="color: #ff8700;">s</span> =
+            octaspire_string_new_format(
+                allocator,
+                <span style="color: #ff1f8b;">"Hello %zu world!"</span>,
+                i);
+
+        <span style="color: #00af00;">if</span> (<span style="color: #cc0000;">!</span>octaspire_vector_push_back_element(
+                v,
+                &amp;s))
+        {
+            printf(<span style="color: #ff1f8b;">"Cannot insert string\n"</span>);
+        }
+    }
+
+    <span style="color: #00af00;">for</span> (<span style="color: #18b2b2;">size_t</span> <span style="color: #ff8700;">i</span> = 0;
+         i &lt; octaspire_vector_get_length(v);
+         ++i)
+    {
+        <span style="color: #18b2b2;">octaspire_string_t</span> <span style="color: #00af00;">const</span> * <span style="color: #00af00;">const</span> <span style="color: #ff8700;">s</span> =
+            octaspire_vector_get_element_at_const(
+                v,
+                i);
+
+        printf(
+            <span style="color: #ff1f8b;">"String %zu. is: %s\n"</span>,
+            i,
+            octaspire_string_get_c_string(
+                s));
+    }
+
+    octaspire_vector_release(v);
+    v = 0;
+
+    octaspire_allocator_release(allocator);
+    allocator = 0;
+
+    <span style="color: #00af00;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org92e8bb6" class="outline-3">
+<h3 id="org92e8bb6"><span class="section-number-3">3.4</span> List</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+TODO
+</p>
+</div>
+</div>
+
+<div id="outline-container-org03b42f0" class="outline-3">
+<h3 id="org03b42f0"><span class="section-number-3">3.5</span> Queue</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+TODO
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7e573d2" class="outline-3">
+<h3 id="org7e573d2"><span class="section-number-3">3.6</span> Pair</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+TODO
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7334166" class="outline-3">
+<h3 id="org7334166"><span class="section-number-3">3.7</span> Hash map</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+Hash map allows the retrieval of values in a constant time using a
+value, like a string, as a key. Hash maps, like all the other Core
+containers, can store any kind of data as values, including pointers
+or arbitrary blocks of memory.
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G14'>copy to clipboard</button>
+<textarea readonly id='area_G14' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>/*****************************************************
+ To compile this file from the &apos;examples&apos; directory:
+ c99 -Wall -Wextra -pedantic -I ../../include/ \
+     hash-map-example.c -lm -L ../../build/    \
+     -loctaspire-core -o hash-map-example
+ ****************************************************/
+#include &lt;stdio.h&gt;
+#define OCTASPIRE_CORE_AMALGAMATED_IMPLEMENTATION
+#include &quot;octaspire-core-amalgamated.c&quot;
+
+int main(void)
+{
+    octaspire_allocator_t *allocator =
+        octaspire_allocator_new(0);
+
+    octaspire_map_t * h =
+        octaspire_map_new_with_octaspire_string_keys(
+            sizeof(float),
+            false,
+            (octaspire_map_element_callback_t)0,
+            allocator);
+
+
+    for (size_t i = 0; i &lt; 10; ++i)
+    {
+        octaspire_string_t *s =
+            octaspire_string_new_format(
+                allocator,
+                &quot;Item %zu!&quot;,
+                i);
+
+        float const value = i * 3.14;
+
+        if (!octaspire_map_put(
+            h,
+            octaspire_string_get_hash(
+                s),
+            &amps,
+            &ampvalue))
+        {
+            printf(
+                &quot;Cannot insert element\n&quot;);
+        }
+    }
+
+    for (size_t i = 0;
+         i &lt; octaspire_map_get_number_of_elements(h);
+         ++i)
+    {
+        octaspire_string_t *s =
+            octaspire_string_new_format(
+                allocator,
+                &quot;Item %zu!&quot;,
+                i);
+
+        octaspire_map_element_t
+            const * const element =
+            octaspire_map_get_const(
+                h,
+                octaspire_string_get_hash(s),
+                &amps);
+
+        float const value = *(float const * const)
+            octaspire_map_element_get_value(
+                element);
+
+        printf(
+            &quot;%s -&gt; %f\n&quot;,
+            octaspire_string_get_c_string(s),
+            value);
+
+        octaspire_string_release(s);
+        s = 0;
+    }
+
+    octaspire_map_release(h);
+    h = 0;
+
+    octaspire_allocator_release(allocator);
+    allocator = 0;
+
+    return 0;
+}
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G14');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G14');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #b2b2b2; font-style: italic;">/*****************************************************</span>
+<span style="color: #b2b2b2; font-style: italic;"> To compile this file from the 'examples' directory:</span>
+<span style="color: #b2b2b2; font-style: italic;"> c99 -Wall -Wextra -pedantic -I ../../include/ \</span>
+<span style="color: #b2b2b2; font-style: italic;">     hash-map-example.c -lm -L ../../build/    \</span>
+<span style="color: #b2b2b2; font-style: italic;">     -loctaspire-core -o hash-map-example</span>
+<span style="color: #b2b2b2; font-style: italic;"> ***************************************************</span><span style="color: #b2b2b2; font-style: italic;">*/</span>
+<span style="color: #b218b2;">#include</span> <span style="color: #ff1f8b;">&lt;stdio.h&gt;</span>
+<span style="color: #b218b2;">#define</span> <span style="color: #ff8700;">OCTASPIRE_CORE_AMALGAMATED_IMPLEMENTATION</span>
+<span style="color: #b218b2;">#include</span> <span style="color: #ff1f8b;">"octaspire-core-amalgamated.c"</span>
+
+<span style="color: #18b2b2;">int</span> <span style="color: #ef2929;">main</span>(<span style="color: #18b2b2;">void</span>)
+{
+    <span style="color: #18b2b2;">octaspire_allocator_t</span> *<span style="color: #ff8700;">allocator</span> =
+        octaspire_allocator_new(0);
+
+    <span style="color: #18b2b2;">octaspire_map_t</span> * <span style="color: #ff8700;">h</span> =
+        octaspire_map_new_with_octaspire_string_keys(
+            <span style="color: #00af00;">sizeof</span>(<span style="color: #18b2b2;">float</span>),
+            <span style="color: #1f5bff;">false</span>,
+            (<span style="color: #18b2b2;">octaspire_map_element_callback_t</span>)0,
+            allocator);
+
+
+    <span style="color: #00af00;">for</span> (<span style="color: #18b2b2;">size_t</span> <span style="color: #ff8700;">i</span> = 0; i &lt; 10; ++i)
+    {
+        <span style="color: #18b2b2;">octaspire_string_t</span> *<span style="color: #ff8700;">s</span> =
+            octaspire_string_new_format(
+                allocator,
+                <span style="color: #ff1f8b;">"Item %zu!"</span>,
+                i);
+
+        <span style="color: #18b2b2;">float</span> <span style="color: #00af00;">const</span> <span style="color: #ff8700;">value</span> = i * 3.14;
+
+        <span style="color: #00af00;">if</span> (<span style="color: #cc0000;">!</span>octaspire_map_put(
+            h,
+            octaspire_string_get_hash(
+                s),
+            &amp;s,
+            &amp;value))
+        {
+            printf(
+                <span style="color: #ff1f8b;">"Cannot insert element\n"</span>);
+        }
+    }
+
+    <span style="color: #00af00;">for</span> (<span style="color: #18b2b2;">size_t</span> <span style="color: #ff8700;">i</span> = 0;
+         i &lt; octaspire_map_get_number_of_elements(h);
+         ++i)
+    {
+        <span style="color: #18b2b2;">octaspire_string_t</span> *<span style="color: #ff8700;">s</span> =
+            octaspire_string_new_format(
+                allocator,
+                <span style="color: #ff1f8b;">"Item %zu!"</span>,
+                i);
+
+        <span style="color: #18b2b2;">octaspire_map_element_t</span>
+            <span style="color: #00af00;">const</span> * <span style="color: #00af00;">const</span> <span style="color: #ff8700;">element</span> =
+            octaspire_map_get_const(
+                h,
+                octaspire_string_get_hash(s),
+                &amp;s);
+
+        <span style="color: #18b2b2;">float</span> <span style="color: #00af00;">const</span> <span style="color: #ff8700;">value</span> = *(<span style="color: #18b2b2;">float</span> <span style="color: #00af00;">const</span> * <span style="color: #00af00;">const</span>)
+            octaspire_map_element_get_value(
+                element);
+
+        printf(
+            <span style="color: #ff1f8b;">"%s -&gt; %f\n"</span>,
+            octaspire_string_get_c_string(s),
+            value);
+
+        octaspire_string_release(s);
+        s = 0;
+    }
+
+    octaspire_map_release(h);
+    h = 0;
+
+    octaspire_allocator_release(allocator);
+    allocator = 0;
+
+    <span style="color: #00af00;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcffee70" class="outline-3">
+<h3 id="orgcffee70"><span class="section-number-3">3.8</span> Input streams from memory and files</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+TODO
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge44cad5" class="outline-3">
+<h3 id="orge44cad5"><span class="section-number-3">3.9</span> Lower level helpers</h3>
+<div class="outline-text-3" id="text-3-9">
+<p>
+TODO
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9ec5eac" class="outline-2">
+<h2 id="org9ec5eac"><span class="section-number-2">4</span> Using the development repository</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+The amalgamated source release can be used without Make or other build
+tools; only a compiler is needed. It is the recommended way of using
+Core and is available from the <i>release</i> directory of the git
+repository and from the <i>core.tar.bz2</i> archives on the home
+page. However, when there is a need to modify Core itself or to build
+the documentation, then some tools are needed and the Makefile in the
+git repository should be used. In this case the files to be modified
+are found from the <i>dev</i> directory.
+</p>
+
+<p>
+On different systems the required installation commands can vary. In
+any case, you should install a C compiler and git. Depending on the
+system, you might also need to install GNU make. If you want to build
+the documentation, you should also install GNU source-highlight and
+python. For code coverage and performance measurement you might need
+to install additional tools.
+</p>
+
+<p>
+Example of using the development repository and the different targets
+available in the Makefile:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G16'>copy to clipboard</button>
+<textarea readonly id='area_G16' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>git clone https://github.com/octaspire/core.git
+cd core
+make submodules-init
+make
+make test
+make codestyle
+make cppcheck
+make valgrind
+make coverage
+make coverage-show
+
+make amalgamation
+
+make clean
+
+rm release/octaspire-core-amalgamated.c
+make release/octaspire-core-amalgamated.c
+
+rm release/documentation/core-manual.html
+make release/documentation/core-manual.html
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G16');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G16');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core
+make submodules-init
+make
+make test
+make codestyle
+make cppcheck
+make valgrind
+make coverage
+make coverage-show
+
+make amalgamation
+
+make clean
+
+rm release/octaspire-core-amalgamated.c
+make release/octaspire-core-amalgamated.c
+
+rm release/documentation/core-manual.html
+make release/documentation/core-manual.html
+</pre>
+</div>
+
+<p>
+Running <code>make</code> should run <code>make submodules-init</code> automatically if
+needed (<code>make submodules-init</code> clones and initializes submodules), but
+it can be run also manually when cloning the repository for the first
+time. There is no need to run it again later.
+</p>
+
+<p>
+If you want to update the submodules into the latest commits, you can
+run <code>make submodules-pull</code>. It does a git pull on all the submodules.
+</p>
+
+<p>
+Running <code>make amalgamation</code> generates first the amalgamation (only, if
+the source files are changed). Then it detects the system and runs the
+correct build script.
+</p>
+
+<p>
+<code>make test</code> runs the unit tests, <code>make codestyle</code> runs the C coding
+style checks, <code>make cppcheck</code> runs the cppcheck static analysis on the
+code, <code>make valgrind</code> runs the unit tests through Valgrind (dynamic
+analysis and memory leak detection) and <code>make coverage</code> generates a
+unit test coverage report that can be used for finding code that is
+not covered yet by unit tests. <code>make coverage-show</code> generates and
+shows the coverage report in a web browser. <code>make
+release/documentation/core-manual.html</code> builds the documentation.
+</p>
+</div>
+
+<div id="outline-container-org821eda5" class="outline-3">
+<h3 id="org821eda5"><span class="section-number-3">4.1</span> Raspberry Pi, Debian and Ubuntu</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+To build Core from the regular source distribution in Raspberry Pi
+(Raspbian), Debian or Ubuntu (16.04 LTS) system:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G18'>copy to clipboard</button>
+<textarea readonly id='area_G18' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>sudo apt-get install git
+git clone https://github.com/octaspire/core.git
+cd core
+make submodules-init
+make
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G18');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G18');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">sudo apt-get install git
+git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core
+make submodules-init
+make
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcb9d4de" class="outline-3">
+<h3 id="orgcb9d4de"><span class="section-number-3">4.2</span> Arch Linux</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+To build on Arch Linux (Arch Linux ARM) system:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G20'>copy to clipboard</button>
+<textarea readonly id='area_G20' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>sudo pacman -S git gcc make
+git clone https://github.com/octaspire/core.git
+cd core
+make submodules-init
+make
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G20');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G20');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">sudo pacman -S git gcc make
+git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core
+make submodules-init
+make
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge2dbf95" class="outline-3">
+<h3 id="orge2dbf95"><span class="section-number-3">4.3</span> Haiku</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+To build on Haiku (Version Walter (Revision hrev51127) x86<sub>gcc2</sub>):
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G22'>copy to clipboard</button>
+<textarea readonly id='area_G22' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>pkgman install gcc_x86
+git clone https://github.com/octaspire/core.git
+cd core
+make submodules-init
+CC=gcc-x86 make
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G22');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G22');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">pkgman install gcc_x86
+git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core
+make submodules-init
+<span style="color: #ff8700;">CC</span>=gcc-x86 make
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfb63124" class="outline-3">
+<h3 id="orgfb63124"><span class="section-number-3">4.4</span> FreeBSD</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+To build on FreeBSD (FreeBSD-11.0-RELEASE-arm-armv6-RPI2) system:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G24'>copy to clipboard</button>
+<textarea readonly id='area_G24' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>sudo pkg install git
+git clone https://github.com/octaspire/core.git
+cd core
+make submodules-init
+make
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G24');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G24');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">sudo pkg install git
+git clone https://github.com/octaspire/core.git
+<span style="color: #b218b2;">cd</span> core
+make submodules-init
+make
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org56a3ced" class="outline-3">
+<h3 id="org56a3ced"><span class="section-number-3">4.5</span> NetBSD</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+To build on NetBSD (NetBSD-7.1-i386) system:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G26'>copy to clipboard</button>
+<textarea readonly id='area_G26' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>sudo pkgin install git
+git clone git://github.com/octaspire/core
+cd core
+perl -pi -e &apos;s/https/git/&apos; .gitmodules
+make submodules-init
+make
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G26');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G26');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">sudo pkgin install git
+git clone git://github.com/octaspire/core
+<span style="color: #b218b2;">cd</span> core
+perl -pi -e <span style="color: #ff1f8b;">'s/https/git/'</span> .gitmodules
+make submodules-init
+make
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb0eeea0" class="outline-3">
+<h3 id="orgb0eeea0"><span class="section-number-3">4.6</span> MINIX 3</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+To build from the regular source distribution on MINIX 3
+(minix<sub>R3.3.0</sub>-588a35b) system:
+</p>
+
+
+
+<button title='copy to clipboard' class='src-copy-button' id='button_G28'>copy to clipboard</button>
+<textarea readonly id='area_G28' style='opacity:.01;height:0;position:absolute;z-index:-1;overflow:hidden;'>su root
+pkgin install clang binutils git-base
+exit
+git clone git://github.com/octaspire/core
+cd core
+perl -pi -e &apos;s/https/git/&apos; .gitmodules
+make submodules-init
+make
+</textarea>
+
+<script>
+  var button = document.querySelector('#button_G28');
+  button.addEventListener('click', function(event) {
+    var area = document.querySelector('#area_G28');
+    area.select();
+    document.execCommand('copy');  });
+</script>
+<div class="org-src-container">
+<pre class="src src-shell">su root
+pkgin install clang binutils git-base
+<span style="color: #00af00;">exit</span>
+git clone git://github.com/octaspire/core
+<span style="color: #b218b2;">cd</span> core
+perl -pi -e <span style="color: #ff1f8b;">'s/https/git/'</span> .gitmodules
+make submodules-init
+make
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+Exported 2021-09-13 Mon 22:04. &nbsp; | &nbsp; Modified 2021-04-18 Sun 13:55.<br/><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)
+</div>
+</body>
+</html>
